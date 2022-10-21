@@ -1,0 +1,25 @@
+<body></body>
+<script>
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  const fundsrc = params.fundsrc; // "some_value"
+  function addScript(src, callback) {
+    var s = document.createElement('script');
+    s.setAttribute('src', src);
+    s.onload = callback;
+    document.body.appendChild(s);
+  }
+  if (fundsrc) {
+    addScript(fundsrc, () => {
+      // console.log(Data_currentFundManager, 'Data_currentFundManager');
+      window.parent.postMessage({
+        source: 'fund',
+        payload: {
+          manager: Data_currentFundManager,
+          code: fS_code,
+        },
+      }); //window.postMessage
+    });
+  }
+</script>
